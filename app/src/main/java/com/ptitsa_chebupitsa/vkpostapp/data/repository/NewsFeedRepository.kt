@@ -12,10 +12,13 @@ import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 
 class NewsFeedRepository(application: Application) {
@@ -47,6 +50,9 @@ class NewsFeedRepository(application: Application) {
             _feedPosts.addAll(posts)
             emit(feedPosts)
         }
+    }.retry {
+        delay(RETRY_TIMEOUT_MILLIS)
+        true
     }
 
 
@@ -63,6 +69,18 @@ class NewsFeedRepository(application: Application) {
             started = SharingStarted.Lazily,
             initialValue = feedPosts
         )
+
+    fun getComments(feedPost: FeedPost): Flow<List<PostComment>> = flow {
+        val comments = apiService.getComments(
+            access_token = getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+        emit(mapper.mapResponseToComments(comments))
+    }.retry {
+        delay(RETRY_TIMEOUT_MILLIS)
+        true
+    }
 
     suspend fun loadNextData() {
         nextDateNeededEvent.emit(Unit)
@@ -82,14 +100,6 @@ class NewsFeedRepository(application: Application) {
         refresherListFlow.emit(feedPosts)
     }
 
-    suspend fun getComments(feedPost: FeedPost): List<PostComment> {
-        val comments = apiService.getComments(
-            access_token = getAccessToken(),
-            ownerId = feedPost.communityId,
-            postId = feedPost.id
-        )
-        return mapper.mapResponseToComments(comments)
-    }
 
     suspend fun changeLikeStatus(feedPost: FeedPost) {
         val response = if (feedPost.isLiked) {
@@ -114,5 +124,9 @@ class NewsFeedRepository(application: Application) {
         val postIndex = _feedPosts.indexOf(feedPost)
         _feedPosts[postIndex] = newPost
         refresherListFlow.emit(feedPosts)
+    }
+
+    companion object {
+        private const val RETRY_TIMEOUT_MILLIS = 3000L
     }
 }

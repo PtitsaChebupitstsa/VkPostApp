@@ -1,11 +1,13 @@
 package com.ptitsa_chebupitsa.vkpostapp.presentation.news
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ptitsa_chebupitsa.vkpostapp.data.repository.NewsFeedRepository
 import com.ptitsa_chebupitsa.vkpostapp.domain.FeedPost
 import com.ptitsa_chebupitsa.vkpostapp.extanions.mergeWith
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
@@ -14,7 +16,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class NewsFeedViewModel(application: Application) : AndroidViewModel(application) {
-
+    private val exceptionHandler = CoroutineExceptionHandler{_,_->
+        Log.d("NewsFeedViewModel", "Exception handled caught  ")
+    }
     private val repository = NewsFeedRepository(application)
 
     private val recommendationsFlow = repository.recommendations
@@ -48,13 +52,13 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
 
 
     fun changeLikeStatus(feedPost: FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.changeLikeStatus(feedPost)
         }
     }
 
         fun remove(feedPost: FeedPost) {
-            viewModelScope.launch {
+            viewModelScope.launch(exceptionHandler) {
                 repository.deletePost(feedPost)
             }
         }
