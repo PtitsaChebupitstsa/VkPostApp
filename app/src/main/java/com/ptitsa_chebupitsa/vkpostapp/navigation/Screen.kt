@@ -2,7 +2,7 @@ package com.ptitsa_chebupitsa.vkpostapp.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import com.ptitsa_chebupitsa.vkpostapp.domain.FeedPost
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.FeedPost
 
 sealed class Screen(
     val route:String

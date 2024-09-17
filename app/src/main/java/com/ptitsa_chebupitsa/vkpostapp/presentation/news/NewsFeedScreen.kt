@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ptitsa_chebupitsa.vkpostapp.domain.FeedPost
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.FeedPost
 
 @Composable
 fun NewsFeedScreen(paddingValues: PaddingValues, onCommentsClickListener: (FeedPost) -> Unit) {

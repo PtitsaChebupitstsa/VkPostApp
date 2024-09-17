@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ptitsa_chebupitsa.vkpostapp.domain.AuthState
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.AuthState
 import com.ptitsa_chebupitsa.vkpostapp.ui.theme.VkPostAppTheme
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope

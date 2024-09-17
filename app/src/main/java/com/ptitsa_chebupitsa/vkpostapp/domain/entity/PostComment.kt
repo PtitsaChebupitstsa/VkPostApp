@@ -1,4 +1,4 @@
-package com.ptitsa_chebupitsa.vkpostapp.domain
+package com.ptitsa_chebupitsa.vkpostapp.domain.entity
 
 data class PostComment(
     val id: Long,

@@ -1,4 +1,4 @@
-package com.ptitsa_chebupitsa.vkpostapp.domain
+package com.ptitsa_chebupitsa.vkpostapp.domain.entity
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -26,7 +26,7 @@ data  class FeedPost (
             }
 
             override fun parseValue(value: String): FeedPost {
-               return Gson().fromJson(value,FeedPost::class.java)
+               return Gson().fromJson(value, FeedPost::class.java)
             }
 
             override fun put(bundle: Bundle, key: String, value: FeedPost) {

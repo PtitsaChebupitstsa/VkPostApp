@@ -2,10 +2,10 @@ package com.ptitsa_chebupitsa.vkpostapp.data.model.mapper
 
 import com.ptitsa_chebupitsa.vkpostapp.data.model.CommentsResponseDto
 import com.ptitsa_chebupitsa.vkpostapp.data.model.NewsFeedResponseDto
-import com.ptitsa_chebupitsa.vkpostapp.domain.FeedPost
-import com.ptitsa_chebupitsa.vkpostapp.domain.PostComment
-import com.ptitsa_chebupitsa.vkpostapp.domain.StatisticItem
-import com.ptitsa_chebupitsa.vkpostapp.domain.StatisticType
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.FeedPost
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.PostComment
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.StatisticItem
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.StatisticType
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

@@ -1,4 +1,4 @@
-package com.ptitsa_chebupitsa.vkpostapp.domain
+package com.ptitsa_chebupitsa.vkpostapp.domain.entity
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

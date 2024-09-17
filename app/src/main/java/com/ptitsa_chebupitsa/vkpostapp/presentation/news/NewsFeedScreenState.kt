@@ -1,6 +1,6 @@
 package com.ptitsa_chebupitsa.vkpostapp.presentation.news
 
-import com.ptitsa_chebupitsa.vkpostapp.domain.FeedPost
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.FeedPost
 
 sealed class NewsFeedScreenState {
 

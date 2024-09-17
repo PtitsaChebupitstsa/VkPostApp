@@ -28,9 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ptitsa_chebupitsa.vkpostapp.R
-import com.ptitsa_chebupitsa.vkpostapp.domain.FeedPost
-import com.ptitsa_chebupitsa.vkpostapp.domain.StatisticItem
-import com.ptitsa_chebupitsa.vkpostapp.domain.StatisticType
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.FeedPost
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.StatisticItem
+import com.ptitsa_chebupitsa.vkpostapp.domain.entity.StatisticType
 
 
 @Composable
@@ -40,7 +40,7 @@ fun VkPost(
     onLikeClickListener: (StatisticItem) -> Unit,
     onCommentsClickListener: (StatisticItem) -> Unit,
 
-) {
+    ) {
     Card(modifier = modifier) {
         Column(
             modifier = Modifier.padding(8.dp)
