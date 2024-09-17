@@ -5,9 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-
+import com.ptitsa_chebupitsa.vkpostapp.domain.AuthState
 import com.ptitsa_chebupitsa.vkpostapp.ui.theme.VkPostAppTheme
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
@@ -21,11 +21,11 @@ class MainActivity : ComponentActivity() {
             setContent {
                 VkPostAppTheme {
                     val viewModel: MainViewModel = viewModel()
-                    val authState = viewModel.authState.observeAsState(AuthState.Initial)
+                    val authState = viewModel.authState.collectAsState(AuthState.Initial)
                     val launcher = rememberLauncherForActivityResult(
                         contract = VK.getVKAuthActivityResultContract()
                     ) { result ->
-                        viewModel.performAuthResult(result)
+                        viewModel.performAuthResult()
                     }
                     when (authState.value) {
                         is AuthState.Authorized -> VkNewsMainScreen()

@@ -8,6 +8,7 @@ import com.ptitsa_chebupitsa.vkpostapp.domain.PostComment
 import com.ptitsa_chebupitsa.vkpostapp.domain.StatisticItem
 import com.ptitsa_chebupitsa.vkpostapp.domain.StatisticType
 import com.ptitsa_chebupitsa.vkpostapp.extanions.mergeWith
+import com.ptitsa_chebupitsa.vkpostapp.domain.AuthState
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +25,8 @@ import kotlinx.coroutines.flow.stateIn
 class NewsFeedRepository(application: Application) {
 
     private val storage = VKPreferencesKeyValueStorage(application)
-    private val token = VKAccessToken.restore(storage)
+    private val token
+        get() = VKAccessToken.restore(storage)
 
     private val apiService = ApiFactory.apiService
     private val mapper = NewsFeedMapper()
@@ -62,6 +64,22 @@ class NewsFeedRepository(application: Application) {
 
     private var nextFrom: String? = null
 
+    private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
+
+    val authStateFlow = flow {
+        checkAuthStateEvents.emit(Unit)
+        checkAuthStateEvents.collect {
+            val currentToken = token
+            val loggedIn = currentToken != null && currentToken.isValid
+            val authState = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
+            emit(authState)
+        }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = AuthState.Initial
+    )
+
     val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
         .mergeWith(refresherListFlow)
         .stateIn(
@@ -69,6 +87,11 @@ class NewsFeedRepository(application: Application) {
             started = SharingStarted.Lazily,
             initialValue = feedPosts
         )
+
+
+    suspend fun checkAuthState() {
+        checkAuthStateEvents.emit(Unit)
+    }
 
     fun getComments(feedPost: FeedPost): Flow<List<PostComment>> = flow {
         val comments = apiService.getComments(

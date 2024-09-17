@@ -1,4 +1,4 @@
-package com.ptitsa_chebupitsa.vkpostapp.presentation.main
+package com.ptitsa_chebupitsa.vkpostapp.domain
 
 sealed class AuthState {
     object Authorized: AuthState()
